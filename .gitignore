@@ -1,0 +1,11 @@
+*.swp
+CMakeFiles/
+CMakeCache.txt
+CTestTestfile.cmake
+DartConfiguration.tcl
+Makefile
+Testing/
+cmake_install.cmake
+*.gcov
+*.gcda
+*.gcno
