@@ -11,7 +11,12 @@ jobs:
     - uses: actions/checkout@v1
     - name: cmake
       run: cmake .
-    - name: make
-      run:  make
+    - name: build
+      run:  cmake --build .
     - name: test
       run: ctest
+    - name: gcov parse_environ_iovec.test.c
+    - name: Codecov
+      uses: codecov/codecov-action@v1.0.5
+      with:
+        token: 9e0119b9-d198-4aa8-b331-2d3ed9ebffa8
