@@ -9,6 +9,7 @@ target_compile_options(parse_environ_iovec.test INTERFACE
   -O0
   -g
   --coverage
+  -ftest-coverage
 )
 
 if(CMAKE_VERSION VERSION_GREATER_EQUAL 3.13)

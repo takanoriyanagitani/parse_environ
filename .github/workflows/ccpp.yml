@@ -9,12 +9,10 @@ jobs:
     
     steps:
     - uses: actions/checkout@v1
-    - name: cmake
-      run: cmake .
-    - name: build
-      run:  cmake --build .
+    - name: compile
+      run:  gcc -O0 -g --coverage -ftest-coverage -o parse_environ_iovec.test parse_environ_iovec.test.c
     - name: test
-      run: ctest
+      run: ./parse_environ_iovec.test
     - name: gcov
       run:  gcov parse_environ_iovec.test.c
     - name: Codecov
