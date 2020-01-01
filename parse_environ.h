@@ -1,12 +1,12 @@
 #pragma once
 
-#include <sys/uio.h>
+#include <stdint.h>
 
-typedef int (*parse_environ_consumer)(void* parameter, const struct iovec key, const struct iovec val);
+#include <string.h>
 
-int parse_environ_get_next_v(const struct iovec environ, void* parameter, parse_environ_consumer c, struct iovec key, struct iovec val){
-  key.iov_len = 0;
-  val.iov_len = 0;
-  c(parameter, key, val);
-  return 0;
+typedef int (*parse_environ_kv_consumer)(void* param, const char* kvpair);
+
+int parse_environ_get_next_kv(const char* env, uint32_t offset, char* buf, uint32_t len, void* param, parse_environ_kv_consumer c){
+  strncpy(buf, env+offset, len);
+  return strlen(buf);
 }

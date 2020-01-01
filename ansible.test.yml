@@ -19,7 +19,7 @@
         dest: "{{ test_dir }}"
       loop:
         - ./parse_environ.h
-        - ./parse_environ_iovec.test.c
+        - ./parse_environ_get_next_kv.test.c
         - ./CMakeLists.txt
     - name: cmake
       shell: cmake .
@@ -34,17 +34,23 @@
       args:
         chdir: "{{ test_dir }}"
     - name: compile
-      shell: gcc -g -O0 --coverage -fprofile-arcs -ftest-coverage -o parse_environ_iovec.test parse_environ_iovec.test.c
+      shell: gcc -g -O0 --coverage -fprofile-arcs -ftest-coverage -o {{ item }} {{ item }}.c
       args:
         chdir: "{{ test_dir }}"
+      loop:
+        - parse_environ_get_next_kv.test
     - name: test
-      shell: ./parse_environ_iovec.test 
+      shell: ./{{ item }}
       args:
         chdir: "{{ test_dir }}"
+      loop:
+        - parse_environ_get_next_kv.test
     - name: gcov
-      shell: gcov parse_environ_iovec.test.c
+      shell: gcov {{ item }}.c
       args:
         chdir: "{{ test_dir }}"
       register: gcov
+      loop:
+        - parse_environ_get_next_kv.test
     - debug:
-        var: gcov.stdout_lines
+        var: gcov.results | map(attribute="stdout_lines") | list
