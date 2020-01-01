@@ -15,7 +15,8 @@ jobs:
       run:  cmake --build .
     - name: test
       run: ctest
-    - name: gcov parse_environ_iovec.test.c
+    - name: gcov
+      run:  gcov parse_environ_iovec.test.c
     - name: Codecov
       uses: codecov/codecov-action@v1.0.5
       with:
