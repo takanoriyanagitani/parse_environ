@@ -1,0 +1,50 @@
+---
+- hosts: local
+  vars:
+    home:     "{{ ansible_env.HOME }}"
+    test_dir: "{{ home }}/github/parse_environ"
+  tasks:
+    - name: remove dest
+      file:
+        path: "{{ test_dir }}"
+        state: absent
+    - name: create dest
+      file:
+        path: "{{ test_dir }}"
+        state: directory
+        mode:  "0755"
+    - name: copy files
+      copy:
+        src: "{{ item }}"
+        dest: "{{ test_dir }}"
+      loop:
+        - ./parse_environ.h
+        - ./parse_environ_iovec.test.c
+        - ./CMakeLists.txt
+    - name: cmake
+      shell: cmake .
+      args:
+        chdir: "{{ test_dir }}"
+    - name: cmake build
+      shell: cmake --build .
+      args:
+        chdir: "{{ test_dir }}"
+    - name: ctest
+      shell: ctest
+      args:
+        chdir: "{{ test_dir }}"
+    - name: compile
+      shell: gcc -g -O0 --coverage -fprofile-arcs -ftest-coverage -o parse_environ_iovec.test parse_environ_iovec.test.c
+      args:
+        chdir: "{{ test_dir }}"
+    - name: test
+      shell: ./parse_environ_iovec.test 
+      args:
+        chdir: "{{ test_dir }}"
+    - name: gcov
+      shell: gcov parse_environ_iovec.test.c
+      args:
+        chdir: "{{ test_dir }}"
+      register: gcov
+    - debug:
+        var: gcov.stdout_lines
