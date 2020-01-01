@@ -46,7 +46,7 @@
       loop:
         - parse_environ_get_next_kv.test
     - name: gcov
-      shell: gcov {{ item }}.c
+      shell: gcov --branch-probabilities {{ item }}.c
       args:
         chdir: "{{ test_dir }}"
       register: gcov
