@@ -15,5 +15,3 @@ jobs:
       run: cmake --build .
     - name: test
       run: ctest
-    - name: gcov
-      run: gcov parse_environ_iovec.test.c
