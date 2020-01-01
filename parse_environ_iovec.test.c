@@ -27,6 +27,6 @@ int main(int argc, char** argv){
     1048576,
   };
   strncpy(envbuf, "LANG=en_US.UTF-8\0USER=ubuntu\0HOME=/home/ubuntu\0TERM=screen\0SHELL=/bin/bash\0", 1048576);
-  parse_environ_iovec(environ, NULL, environ2json, key, val);
+  parse_environ_get_next_v(environ, NULL, environ2json, key, val);
   return 0;
 }
