@@ -13,6 +13,12 @@ jobs:
       run:  |
         gcc -O0 -g --coverage -ftest-coverage -o parse_environ_get_next_kv.test   parse_environ_get_next_kv.test.c
         gcc -O0 -g --coverage -ftest-coverage -o parse_environ_load_proc_env.test parse_environ_load_proc_env.test.c
+    - name: pwd
+      run:  pwd
+    - name: list dir
+      run:  ls -l .
+    - name: list dir itself
+      run:  ls -ld .
     - name: test
       run: |
         ./parse_environ_get_next_kv.test
