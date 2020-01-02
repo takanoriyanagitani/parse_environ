@@ -56,8 +56,11 @@
         mode: "0755"
     - name: create test environ
       copy:
-        content: "LANG=en_US.UTF-8\0TERM=screen\0"
-        dest: "{{ test_data_dir }}/environ"
+        content: "{{ item.value }}"
+        dest: "{{ test_data_dir }}/{{ item.name }}"
+      loop:
+        - { name: environ, value: "LANG=en_US.UTF-8\0TERM=screen\0"     }
+        - { name: env2,    value: "LANG=en_US.UTF-8\0SHELL=/bin/bash\0" }
     - name: test
       shell: ./{{ item }}
       args:
