@@ -5,14 +5,18 @@ on: [push]
 jobs:
   build:
 
-    runs-on: ubuntu-latest
+    runs-on: [ ubuntu-18.04 ]
     
     steps:
     - uses: actions/checkout@v1
     - name: compile
-      run:  gcc -O0 -g --coverage -ftest-coverage -o parse_environ_get_next_kv.test parse_environ_get_next_kv.test.c
+      run:  |
+        gcc -O0 -g --coverage -ftest-coverage -o parse_environ_get_next_kv.test   parse_environ_get_next_kv.test.c
+        gcc -O0 -g --coverage -ftest-coverage -o parse_environ_load_proc_env.test parse_environ_load_proc_env.test.c
     - name: test
-      run: ./parse_environ_get_next_kv.test
+      run: |
+        ./parse_environ_get_next_kv.test
+        ./parse_environ_load_proc_env
     - name: Codecov
       uses: codecov/codecov-action@v1.0.5
       with:
