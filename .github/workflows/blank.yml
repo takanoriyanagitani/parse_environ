@@ -13,5 +13,10 @@ jobs:
       run: cmake .
     - name: build
       run: cmake --build .
+    - name: copy test environ files
+      run:  |
+        mkdir -p ./.test
+        cp ./testdata/environ ./.test/
+        cp ./testdata/env2    ./.test/
     - name: test
       run: ctest
