@@ -1,8 +1,14 @@
 ---
 - hosts: local
   vars:
-    home:     "{{ ansible_env.HOME }}"
-    test_dir: "{{ home }}/github/parse_environ"
+    home:          "{{ ansible_env.HOME }}"
+    test_dir:      "{{ home }}/github/parse_environ"
+    test_data_dir: "{{ home }}/github/parse_environ/.test"
+    sources:
+      - parse_environ_get_next_kv.test
+      - parse_environ_load_proc_env.test
+    sources_with_arg:
+      - { exe: parse_environ_load_proc_env.test, args: ./.test/environ }
   tasks:
     - name: remove dest
       file:
@@ -20,6 +26,7 @@
       loop:
         - ./parse_environ.h
         - ./parse_environ_get_next_kv.test.c
+        - ./parse_environ_load_proc_env.test.c
         - ./CMakeLists.txt
     - name: cmake
       shell: cmake .
@@ -37,20 +44,34 @@
       shell: gcc -g -O0 --coverage -fprofile-arcs -ftest-coverage -o {{ item }} {{ item }}.c
       args:
         chdir: "{{ test_dir }}"
-      loop:
-        - parse_environ_get_next_kv.test
+      loop: "{{ sources }}"
+    - name: remove test dir
+      file:
+        path: "{{ test_data_dir }}"
+        state: absent
+    - name: create test dir
+      file:
+        path: "{{ test_data_dir }}"
+        state: directory
+        mode: "0755"
+    - name: create test environ
+      copy:
+        content: "LANG=en_US.UTF-8\0TERM=screen\0"
+        dest: "{{ test_data_dir }}/environ"
     - name: test
       shell: ./{{ item }}
       args:
         chdir: "{{ test_dir }}"
-      loop:
-        - parse_environ_get_next_kv.test
+      loop: "{{ sources }}"
+    - name: test with arg
+      shell: ./{{ item.exe }} {{ item.args }}
+      args:
+        chdir: "{{ test_dir }}"
+      loop: "{{ sources_with_arg }}"
     - name: gcov
-      shell: gcov --branch-probabilities {{ item }}.c
+      shell: gcov *.c
       args:
         chdir: "{{ test_dir }}"
       register: gcov
-      loop:
-        - parse_environ_get_next_kv.test
     - debug:
-        var: gcov.results | map(attribute="stdout_lines") | list
+        var: gcov.stdout_lines
