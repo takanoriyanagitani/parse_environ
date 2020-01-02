@@ -30,6 +30,7 @@ jobs:
       run: |
         ./parse_environ_get_next_kv.test
         ./parse_environ_load_proc_env.test
+        ./parse_environ_load_proc_env.test ./testdata/environ
     - name: gcov
       run:  gcov --branch-probabilities *.c
     - name: Codecov
