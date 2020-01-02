@@ -1,6 +1,3 @@
-ignore:
-  - parse_environ_load_proc_env.test.c
-
 codecov:
   require_ci_to_pass: yes
 
