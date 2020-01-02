@@ -15,13 +15,15 @@ jobs:
         gcc -O0 -g --coverage -ftest-coverage -o parse_environ_load_proc_env.test parse_environ_load_proc_env.test.c
     - name: pwd
       run:  pwd
-    - name: create test environ files
+    - name: copy test environ files
       run:  |
         mkdir -p ./.test
-        printf "LANG=en_US.UTF-8\0TERM=screen\0"     > ./.test/environ
-        printf "LANG=en_US.UTF-8\0SHELL=/bin/bash\0" > ./.test/env2
+        cp ./testdata/environ ./.test/
+        cp ./testdata/env2    ./.test/
     - name: list dir
       run:  ls -la .
+    - name: list test dir
+      run:  ls -la ./.test
     - name: list dir itself
       run:  ls -ld .
     - name: test
