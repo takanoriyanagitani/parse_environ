@@ -9,22 +9,27 @@ int sub(const char* environ){
   uint32_t offset = 0;
   kvlen = parse_environ_get_next_kv(environ, offset, buf, 1048576, NULL, NULL);
   if(16 != kvlen) return -1;
+  if(0  != strncmp(buf, "LANG=en_US.UTF-8", kvlen)) return -1;
   offset += 1 + kvlen;
 
   kvlen = parse_environ_get_next_kv(environ, offset, buf, 1048576, NULL, NULL);
   if(11 != kvlen) return -1;
+  if(0  != strncmp(buf, "USER=ubuntu", kvlen)) return -1;
   offset += 1 + kvlen;
 
   kvlen = parse_environ_get_next_kv(environ, offset, buf, 1048576, NULL, NULL);
   if(17 != kvlen) return -1;
+  if(0  != strncmp(buf, "HOME=/home/ubuntu", kvlen)) return -1;
   offset += 1 + kvlen;
 
   kvlen = parse_environ_get_next_kv(environ, offset, buf, 1048576, NULL, NULL);
   if(11 != kvlen) return -1;
+  if(0  != strncmp(buf, "TERM=screen", kvlen)) return -1;
   offset += 1 + kvlen;
 
   kvlen = parse_environ_get_next_kv(environ, offset, buf, 1048576, NULL, NULL);
   if(15 != kvlen) return -1;
+  if(0  != strncmp(buf, "SHELL=/bin/bash", kvlen)) return -1;
   offset += 1 + kvlen;
 
   kvlen = parse_environ_get_next_kv(environ, offset, buf, 1048576, NULL, NULL);
